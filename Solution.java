@@ -11,36 +11,41 @@ class Result {
      *  2. STRING b
      */
     public static int xorAndSum(String a, String b) {
-        final long MOD_VALUE = 1000000007; // Modulo que se deve encontrar a soma 10^9+7
-        final long MAX_ITERATIONS = 314159; // Tamanho máximo que pode se atingir de 0 até 314159
-        long sum = 0;
-        long count = 0;
+        final long MOD_VALUE = 1000000007; // O módulo pelo qual a soma deve ser calculada (10^9+7)
+        final long MAX_ITERATIONS = 314159; // Tamanho máximo de iterações  que pode se atingir de 0 até 314159
+        long numberOneCount = 0;
         long pow = 1;
+        long sum = 0;
 
-        int[] aInverseArray = inverse(a, a.length());
-        int[] bInverseArray = inverse(b, b.length());
+        int[] aBinaryInverseArray = inverse(a, a.length());
+        int[] bBinaryInverseArray = inverse(b, b.length());
 
         for (int i = 0; i < MAX_ITERATIONS; i++) {
-            if (i < bInverseArray.length)
-                count += bInverseArray[i];
-            long multiplier = (i < aInverseArray.length && aInverseArray[i] == 1) ? MAX_ITERATIONS - count + 1 : count;
+            // Realiza a contagem de números 1 presente no array
+            if (i < bBinaryInverseArray.length)
+                numberOneCount += bBinaryInverseArray[i];
+            long multiplier = (i < aBinaryInverseArray.length && aBinaryInverseArray[i] == 1) ? MAX_ITERATIONS - numberOneCount + 1 : numberOneCount;
             sum += (pow * multiplier) % MOD_VALUE;
             pow = (pow << 1) % MOD_VALUE;
         }
 
-        for (int j : bInverseArray) {
-            sum = (sum + pow * count) % MOD_VALUE;
+        for (int j : bBinaryInverseArray) {
+            sum = (sum + pow * numberOneCount) % MOD_VALUE;
             pow = (pow << 1) % MOD_VALUE;
-            count -= j;
+            numberOneCount -= j;
         }
 
         return ((int) sum);
     }
 
-    private static int[] inverse(String x, int arrayLength) {
-        StringBuilder sb = new StringBuilder(x).reverse();
+    /**
+     * Método para converter cada dígito para um inteiro e armazenar em um array
+     * @return Retorna um array de inteiros
+     */
+    private static int[] inverse(String binaryPositiveInteger, int arrayLength) {
+        StringBuilder sb = new StringBuilder(binaryPositiveInteger).reverse();
         int[] arr = new int[arrayLength];
-        for (int i = 0; i < x.length(); i++) {
+        for (int i = 0; i < binaryPositiveInteger.length(); i++) {
             arr[i] = sb.charAt(i) - '0';
         }
         return arr;
