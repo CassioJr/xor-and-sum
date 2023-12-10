@@ -1,4 +1,4 @@
-# Trabalho 2 Sobre Algoritmos Programação Dinâmica
+# Trabalho 2 Sobre Programação Dinâmica
 
 #### Algoritmo escolhido pelo grupo: Xor and Sum
 
